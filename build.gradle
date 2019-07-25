@@ -13,9 +13,16 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+  swagger2Version = '2.8.0'
+}
+
 dependencies {
   testCompile 'ch.qos.logback:logback-classic:1.2.3'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	compile "io.springfox:springfox-swagger2:${swagger2Version}"
+  compile "io.springfox:springfox-swagger-ui:${swagger2Version}"
   
   testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
