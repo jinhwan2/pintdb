@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DatabaseController {
-	@GetMapping("/")
-	public String defaultPage() {
-		return "pintDB server";
-	}
+  @GetMapping("/")
+  public String defaultPage() {
+    return "pintDB server";
+  }
 }
