@@ -8,6 +8,8 @@ Easy to use key-value database
 
 ## Data Structure
 - String
+- HashMap
+- List
 
 ## Contribute Role
 - code style - googleStyle

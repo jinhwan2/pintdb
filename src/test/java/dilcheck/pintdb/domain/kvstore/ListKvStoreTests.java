@@ -2,52 +2,53 @@ package dilcheck.pintdb.domain.kvstore;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class StringKvStoreTests {
-  private static final StringKvStore stringKvStore = new StringKvStore();
-  private static String VALUE1;
-  private static String VALUE2;
+public class ListKvStoreTests {
+  private static final ListKvStore listKvStore = new ListKvStore();
+  private static ArrayList<String> VALUE1;
+  private static ArrayList<String> VALUE2;
 
   /**
    * test environment setup.
    */
   @BeforeClass
   public static void setup() {
-    VALUE1 = "getTest";
-    VALUE2 = "deleteTest";
+    VALUE1 = new ArrayList<String>();
+    VALUE2 = new ArrayList<String>();
 
-    stringKvStore.set("get", VALUE1);
-    stringKvStore.set("delete", VALUE2);
+    listKvStore.set("get", VALUE1);
+    listKvStore.set("delete", VALUE2);
   }
 
   @Test
   public void getTest() {
-    String actual = stringKvStore.get("get");
-
+    List<? extends Object> actual = listKvStore.get("get");
     assertEquals(VALUE1, actual);
   }
 
   @Test(expected = NullPointerException.class)
   public void getExceptionTest() {
-    stringKvStore.get(null);
+    listKvStore.get(null);
   }
 
   @Test
   public void setTest() {
     final String key = "key";
-    final String expected = "value";
+    final ArrayList<String> expected = new ArrayList<String>();
 
-    stringKvStore.set(key, expected);
-    final String actual = stringKvStore.get(key);
+    listKvStore.set(key, expected);
+    final List<? extends Object> actual = listKvStore.get(key);
 
     assertEquals(expected, actual);
   }
 
   @Test(expected = NullPointerException.class)
   public void setExceptionTest() {
-    stringKvStore.set(null, "value");
+    listKvStore.set(null, new ArrayList<String>());
   }
 
   @Test
@@ -55,14 +56,14 @@ public class StringKvStoreTests {
     final String key = "delete";
     final String expected = null;
 
-    stringKvStore.delete(key);
-    final String actual = stringKvStore.get(key);
+    listKvStore.delete(key);
+    final List<? extends Object> actual = listKvStore.get(key);
 
     assertEquals(expected, actual);
   }
 
   @Test(expected = NullPointerException.class)
   public void deleteExceptionTest() {
-    stringKvStore.delete(null);
+    listKvStore.delete(null);
   }
 }
