@@ -14,5 +14,10 @@ Link: [http://localhost:5959/swagger-ui.html](http://localhost:5959/swagger-ui.h
 - HashMap
 - List
 
+## start
+```bash
+./pintDB start
+```
+
 ## Contribute Role
 - code style - googleStyle

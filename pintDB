@@ -1,0 +1,25 @@
+#!/bin/bash
+
+function start() {
+  gradle build
+	gradle bootrun
+}
+
+function help() {
+MANUAL=$(cat <<-EOF
+pintDB \n
+\tstart
+
+EOF
+)
+
+echo -e $MANUAL
+}
+
+if [ -z $1 ]
+then
+ help
+else
+ $1
+fi
+  
