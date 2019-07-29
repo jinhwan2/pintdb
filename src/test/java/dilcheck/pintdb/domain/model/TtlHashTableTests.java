@@ -1,28 +1,39 @@
-package dilcheck.pintdb.domain.kvstore;
+package dilcheck.pintdb.domain.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import org.junit.Test;
 
-public class HashMapKvStoreTests extends StoreTestConfig {
-  private static final HashMapKvStore hashMapKvStore = new HashMapKvStore();
-  static HashMap<String, String> value = new HashMap<>();
+public class TtlHashTableTests {
+  private static final int CORES = Runtime.getRuntime().availableProcessors() * 1;
+  private static final int TEST = 1_000_000;
+  private static final int SECTION = TEST / CORES;
 
-  static {
-    value.put("test", "test");
-  }
+  private static final TtlConcurrentHashMap<String, Object> ttlHashTable =
+      new TtlConcurrentHashMap<String, Object>(TimeUnit.SECONDS, 1);
+  private static final Object value = "value";
 
   @Test
   public void simpleIoTest() {
-    String key = "test";
+    Object key = "test";
+    ttlHashTable.put("test", value);
 
-    hashMapKvStore.set(key, value);
-    HashMap<String, ? extends Object> actual = hashMapKvStore.get(key);
-
+    Object actual = ttlHashTable.get(key);
     assertEquals(value, actual);
+  }
+
+  @Test
+  public void liveTest() throws InterruptedException {
+    String key = "live";
+    ttlHashTable.put(key, "test");
+
+    Thread.sleep(1000);
+
+    Object actual = ttlHashTable.get(key);
+    assertEquals(null, actual);
   }
 
   @Test
@@ -30,7 +41,7 @@ public class HashMapKvStoreTests extends StoreTestConfig {
     // single thread input test
     long start = System.currentTimeMillis();
     IntStream.range(1, TEST + 1).forEach(i -> {
-      hashMapKvStore.set(String.valueOf(i), new HashMap<String, String>());
+      ttlHashTable.put(String.valueOf(i), value);
     });
 
     long end = System.currentTimeMillis();
@@ -44,10 +55,12 @@ public class HashMapKvStoreTests extends StoreTestConfig {
     long start = System.currentTimeMillis();
 
     IntStream.range(1, TEST + 1).forEach(i -> {
-      hashMapKvStore.get(String.valueOf(i));
+      ttlHashTable.get(String.valueOf(i));
     });
 
     long end = System.currentTimeMillis();
+
+    ttlHashTable.clear();
     // goal 1_000_000 read in 2 second
     assertTrue(end - start < 2000);
 
@@ -60,12 +73,12 @@ public class HashMapKvStoreTests extends StoreTestConfig {
 
     IntStream.range(0, CORES).parallel().forEach(i -> {
       for (int j = SECTION * i; j < (SECTION * (i + 1)); j++) {
-        hashMapKvStore.set(String.valueOf(i), value);
+        ttlHashTable.put(String.valueOf(i + "_" + j), value);
       }
     });
 
     long end = System.currentTimeMillis();
-    // goal 1_000_000 write in 2 second
+    // goal 1_000_000 write in 1.5 second
     assertTrue(end - start < 2000);
   }
 
@@ -76,7 +89,7 @@ public class HashMapKvStoreTests extends StoreTestConfig {
 
     IntStream.range(0, CORES).parallel().forEach(i -> {
       for (int j = SECTION * i; j < (SECTION * (i + 1)); j++) {
-        hashMapKvStore.get(String.valueOf(i));
+        ttlHashTable.get(String.valueOf(i + "_" + j));
       }
     });
 

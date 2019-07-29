@@ -1,68 +1,80 @@
 package dilcheck.pintdb.domain.kvstore;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.BeforeClass;
+import java.util.stream.IntStream;
 import org.junit.Test;
 
-public class StringKvStoreTests {
+public class StringKvStoreTests extends StoreTestConfig {
   private static final StringKvStore stringKvStore = new StringKvStore();
-  private static String VALUE1;
-  private static String VALUE2;
+  private static final String value = "value";
 
-  /**
-   * test environment setup.
-   */
-  @BeforeClass
-  public static void setup() {
-    VALUE1 = "getTest";
-    VALUE2 = "deleteTest";
+  @Test
+  public void simpleIoTest() {
+    String key = "test";
 
-    stringKvStore.set("get", VALUE1);
-    stringKvStore.set("delete", VALUE2);
+    stringKvStore.set(key, value);
+    String actual = stringKvStore.get(key);
+    assertEquals(value, actual);
   }
 
   @Test
-  public void getTest() {
-    String actual = stringKvStore.get("get");
+  public void testA() {
+    // single thread input test
+    long start = System.currentTimeMillis();
+    IntStream.range(1, TEST + 1).forEach(i -> {
+      stringKvStore.set(String.valueOf(i), value);
+    });
 
-    assertEquals(VALUE1, actual);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void getExceptionTest() {
-    stringKvStore.get(null);
-  }
-
-  @Test
-  public void setTest() {
-    final String key = "key";
-    final String expected = "value";
-
-    stringKvStore.set(key, expected);
-    final String actual = stringKvStore.get(key);
-
-    assertEquals(expected, actual);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void setExceptionTest() {
-    stringKvStore.set(null, "value");
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
   }
 
   @Test
-  public void deleteTest() {
-    final String key = "delete";
-    final String expected = null;
+  public void testB() {
+    // single thread read test
+    long start = System.currentTimeMillis();
 
-    stringKvStore.delete(key);
-    final String actual = stringKvStore.get(key);
+    IntStream.range(1, TEST + 1).forEach(i -> {
+      stringKvStore.get(String.valueOf(i));
+    });
 
-    assertEquals(expected, actual);
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
   }
 
-  @Test(expected = NullPointerException.class)
-  public void deleteExceptionTest() {
-    stringKvStore.delete(null);
+  @Test
+  public void testC() {
+    // multi thread input test
+    long start = System.currentTimeMillis();
+
+    IntStream.range(0, CORES).parallel().forEach(i -> {
+      for (int j = SECTION * i; j < (SECTION * (i + 1)); j++) {
+        stringKvStore.set(String.valueOf(i + "_" + j), value);
+      }
+    });
+
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
+  }
+
+  @Test
+  public void testD() {
+    // multi thread read test
+    long start = System.currentTimeMillis();
+
+    IntStream.range(0, CORES).parallel().forEach(i -> {
+      for (int j = SECTION * i; j < (SECTION * (i + 1)); j++) {
+        stringKvStore.get(String.valueOf(i + "_" + j));
+      }
+    });
+
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
   }
 }

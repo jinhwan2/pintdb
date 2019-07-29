@@ -1,69 +1,89 @@
 package dilcheck.pintdb.domain.kvstore;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.BeforeClass;
+import java.util.stream.IntStream;
 import org.junit.Test;
 
-public class ListKvStoreTests {
+public class ListKvStoreTests extends StoreTestConfig {
   private static final ListKvStore listKvStore = new ListKvStore();
-  private static ArrayList<String> VALUE1;
-  private static ArrayList<String> VALUE2;
+  static final List<String> value = new ArrayList<>();
 
-  /**
-   * test environment setup.
-   */
-  @BeforeClass
-  public static void setup() {
-    VALUE1 = new ArrayList<String>();
-    VALUE2 = new ArrayList<String>();
-
-    listKvStore.set("get", VALUE1);
-    listKvStore.set("delete", VALUE2);
+  static {
+    value.add("test");
   }
 
   @Test
-  public void getTest() {
-    List<? extends Object> actual = listKvStore.get("get");
-    assertEquals(VALUE1, actual);
-  }
+  public void simpleIoTest() {
+    String key = "test";
 
-  @Test(expected = NullPointerException.class)
-  public void getExceptionTest() {
-    listKvStore.get(null);
-  }
-
-  @Test
-  public void setTest() {
-    final String key = "key";
-    final ArrayList<String> expected = new ArrayList<String>();
-
-    listKvStore.set(key, expected);
-    final List<? extends Object> actual = listKvStore.get(key);
-
-    assertEquals(expected, actual);
-  }
-
-  @Test(expected = NullPointerException.class)
-  public void setExceptionTest() {
-    listKvStore.set(null, new ArrayList<String>());
+    listKvStore.set(key, value);
+    List<? extends Object> actual = listKvStore.get(key);
+    assertEquals(value, actual);
   }
 
   @Test
-  public void deleteTest() {
-    final String key = "delete";
-    final String expected = null;
+  public void testA() {
+    // single thread input test
+    long start = System.currentTimeMillis();
+    IntStream.range(1, TEST + 1).forEach(i -> {
+      listKvStore.set(String.valueOf(i), value);
+    });
 
-    listKvStore.delete(key);
-    final List<? extends Object> actual = listKvStore.get(key);
-
-    assertEquals(expected, actual);
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
   }
 
-  @Test(expected = NullPointerException.class)
-  public void deleteExceptionTest() {
-    listKvStore.delete(null);
+  @Test
+  public void testB() {
+    // single thread read test
+    long start = System.currentTimeMillis();
+
+    IntStream.range(1, TEST + 1).forEach(i -> {
+      listKvStore.set(String.valueOf(i), value);
+    });
+
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
+
+  }
+
+  @Test
+  public void testC() {
+    // multi thread input test
+    long start = System.currentTimeMillis();
+
+    // interrupt 고려하기
+    IntStream.range(0, CORES).parallel().forEach(i -> {
+      for (int j = SECTION * i; j < (SECTION * (i + 1)); j++) {
+        listKvStore.set(String.valueOf(i), value);
+      }
+    });
+
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
+  }
+
+  @Test
+  public void testD() {
+    // multi thread read test
+    long start = System.currentTimeMillis();
+
+    // interrupt 고려하기
+    IntStream.range(0, CORES).parallel().forEach(i -> {
+      for (int j = SECTION * i; j < (SECTION * (i + 1)); j++) {
+        listKvStore.set(String.valueOf(i), value);
+      }
+    });
+
+    long end = System.currentTimeMillis();
+    // goal 1_000_000 write in 2 second
+    assertTrue(end - start < 2000);
   }
 }
