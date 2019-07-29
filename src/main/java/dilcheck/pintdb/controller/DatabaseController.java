@@ -1,14 +1,147 @@
 package dilcheck.pintdb.controller;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
+import dilcheck.pintdb.model.DataType;
+import dilcheck.pintdb.model.ResultForm;
 import dilcheck.pintdb.model.V1ApiVersion;
+import dilcheck.pintdb.service.DatabaseService;
+import java.util.HashMap;
+import java.util.List;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @V1ApiVersion
+@RestController
 public class DatabaseController {
-  @GetMapping("/")
-  public String defaultPage() {
-    return "pintDB server";
+  protected final Logger logger = getLogger(getClass());
+
+  @Autowired
+  DatabaseService databaseService;
+
+  /**
+   * set string value to store.
+   * 
+   * @param key key
+   * @param value value(String)
+   */
+  @PostMapping("/strings")
+  public ResultForm setString(String key, String value) {
+    logger.info("[DC] setString key: {}, value: {}", key, value);
+    databaseService.set(key, value, DataType.STRING);
+
+    ResultForm resultForm = new ResultForm.Builder().status(true).build();
+    return resultForm;
+  }
+
+  /**
+   * get string value by key.
+   * 
+   * @param key key
+   */
+  @GetMapping("/strings")
+  public ResultForm getString(String key) {
+    logger.info("[DC] getString key: {}", key);
+
+    Object value = databaseService.get(key, DataType.STRING);
+    ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
+    return resultForm;
+  }
+
+  /**
+   * delete string by key.
+   * 
+   * @param key key
+   */
+  @DeleteMapping("/strings")
+  public ResultForm deleteString(String key) {
+    logger.info("[DC] deleteString key: {}", key);
+
+    ResultForm resultForm = new ResultForm.Builder().status(true).build();
+    return resultForm;
+  }
+
+  /**
+   * set hashMap value to store.
+   * 
+   * @param key key
+   * @param value value(hashMap)
+   */
+  @PostMapping("/hashmaps")
+  public ResultForm setHashMap(String key, HashMap<String, ? extends Object> value) {
+    logger.info("[DC] setHashMap key: {}, value: {}", key, value);
+
+    ResultForm resultForm = new ResultForm.Builder().status(true).build();
+    return resultForm;
+  }
+
+  /**
+   * get hashMap by key.
+   * 
+   * @param key key
+   */
+  @GetMapping("/hashmaps")
+  public ResultForm getHashMap(String key) {
+    logger.info("[DC] getHashMap key: {}", key);
+
+    Object value = databaseService.get(key, DataType.HASHMAP);
+    ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
+    return resultForm;
+  }
+
+  /**
+   * delete hashMap by key.
+   * 
+   * @param key key
+   */
+  @DeleteMapping("/hashmaps")
+  public ResultForm deleteHashMap(String key) {
+    logger.info("[DC] deleteHashMap key: {}", key);
+
+    ResultForm resultForm = new ResultForm.Builder().status(true).build();
+    return resultForm;
+  }
+
+  /**
+   * set list value to store.
+   * 
+   * @param key key
+   * @param value value(list)
+   */
+  @PostMapping("/lists")
+  public ResultForm setList(String key, List<? extends Object> value) {
+    logger.info("[DC] setList key: {}, value: {}", key, value);
+
+    ResultForm resultForm = new ResultForm.Builder().status(true).build();
+    return resultForm;
+  }
+
+  /**
+   * get list by key.
+   * @param key key
+   */
+  @GetMapping("/lists")
+  public ResultForm getList(String key) {
+    logger.info("[DC] getList key: {}", key);
+
+    Object value = databaseService.get(key, DataType.LIST);
+    ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
+    return resultForm;
+  }
+
+  /**
+   * delete list by key.
+   * @param key key
+   */
+  @DeleteMapping("/lists")
+  public ResultForm deleteList(String key) {
+    logger.info("[DC] deleteList key: {}", key);
+
+    ResultForm resultForm = new ResultForm.Builder().status(true).build();
+    return resultForm;
   }
 }

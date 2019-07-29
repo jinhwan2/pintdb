@@ -15,12 +15,14 @@ repositories {
 
 ext {
   swagger2Version = '2.8.0'
+  guavaVersion = '23.0'
 }
 
 dependencies {
   testCompile 'ch.qos.logback:logback-classic:1.2.3'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
+	compile "com.google.guava:guava:${guavaVersion}"
 	compile "io.springfox:springfox-swagger2:${swagger2Version}"
   compile "io.springfox:springfox-swagger-ui:${swagger2Version}"
   
