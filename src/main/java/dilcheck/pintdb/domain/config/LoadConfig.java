@@ -1,7 +1,7 @@
 package dilcheck.pintdb.domain.config;
 
-import static dilcheck.pintdb.domain.config.StoreConfig.getFileName;
-import static dilcheck.pintdb.domain.config.StoreConfig.getFilePath;
+import static dilcheck.pintdb.domain.config.Configuration.getFileName;
+import static dilcheck.pintdb.domain.config.Configuration.getFilePath;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import dilcheck.pintdb.domain.model.AppendableObjectInputStream;

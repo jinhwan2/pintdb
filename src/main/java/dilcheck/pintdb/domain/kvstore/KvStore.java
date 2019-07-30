@@ -1,6 +1,6 @@
 package dilcheck.pintdb.domain.kvstore;
 
-import static dilcheck.pintdb.domain.config.StoreConfig.getExpiredTime;
+import static dilcheck.pintdb.domain.config.Configuration.getExpiredTime;
 import static java.util.Objects.requireNonNull;
 import static org.slf4j.LoggerFactory.getLogger;
 

@@ -40,6 +40,9 @@ kvStore:
   
   #persistent file name 
   file-name: store.log 
+
+  #persistent on
+  save: true
 ```
 
 ## Contribute Role

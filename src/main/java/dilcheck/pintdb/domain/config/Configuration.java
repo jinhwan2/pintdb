@@ -7,13 +7,13 @@ import org.yaml.snakeyaml.Yaml;
 /*
  * use this configuration because of static kvStore. need to find better way
  */
-public class StoreConfig {
+public class Configuration {
   private static HashMap<String, HashMap<String, Object>> configMap;
 
   /**
    * setup configuration.
    */
-  public StoreConfig() {
+  public Configuration() {
     final Yaml yaml = new Yaml();
     final InputStream inputStream =
         this.getClass().getClassLoader().getResourceAsStream("application.yaml");

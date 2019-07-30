@@ -6,3 +6,4 @@ kvStore:
   expired-time: 30
   file-path: /logfs/data
   file-name: store.log
+  save: false

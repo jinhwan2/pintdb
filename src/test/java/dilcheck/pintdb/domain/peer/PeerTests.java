@@ -2,7 +2,7 @@ package dilcheck.pintdb.domain.peer;
 
 import static org.junit.Assert.assertTrue;
 
-import dilcheck.pintdb.controller.AbstractRunnerConfig;
+import dilcheck.pintdb.AbstractRunnerConfig;
 import dilcheck.pintdb.domain.p2p.Peer;
 import java.io.IOException;
 import java.net.Socket;

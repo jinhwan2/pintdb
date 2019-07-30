@@ -3,6 +3,7 @@ package dilcheck.pintdb.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import dilcheck.pintdb.AbstractRunnerConfig;
 import dilcheck.pintdb.model.RequestForm;
 import java.util.ArrayList;
 import java.util.HashMap;

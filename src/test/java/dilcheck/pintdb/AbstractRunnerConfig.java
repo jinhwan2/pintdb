@@ -1,6 +1,5 @@
-package dilcheck.pintdb.controller;
+package dilcheck.pintdb;
 
-import dilcheck.pintdb.SetupConfig;
 import dilcheck.pintdb.controller.DatabaseController;
 import dilcheck.pintdb.domain.config.LoadConfig;
 import dilcheck.pintdb.exec.PintDbLauncher;
@@ -17,5 +16,5 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = {PintDbLauncher.class,
     DatabaseController.class, SaveDatabaseService.class, LoadConfig.class})
-public class AbstractRunnerConfig extends SetupConfig{
+public class AbstractRunnerConfig extends SetupConfig {
 }

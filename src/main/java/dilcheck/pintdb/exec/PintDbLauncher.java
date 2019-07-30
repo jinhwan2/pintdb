@@ -1,6 +1,6 @@
 package dilcheck.pintdb.exec;
 
-import dilcheck.pintdb.domain.config.StoreConfig;
+import dilcheck.pintdb.domain.config.Configuration;
 import dilcheck.pintdb.domain.p2p.ConnectionServer;
 import java.io.IOException;
 import org.springframework.boot.SpringApplication;
@@ -24,14 +24,14 @@ public class PintDbLauncher {
   }
 
   private static void loadStaticProperties() {
-    new StoreConfig();
+    new Configuration();
   }
 
   /**
    * run heart beat server.
    */
   public static void runHealthServer() throws IOException {
-    Integer healthPort = StoreConfig.getHealthPort();
+    Integer healthPort = Configuration.getHealthPort();
     new ConnectionServer().start(healthPort);
   }
 }

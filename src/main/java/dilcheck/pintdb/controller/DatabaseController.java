@@ -5,7 +5,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import dilcheck.pintdb.model.RequestForm;
 import dilcheck.pintdb.model.ResultForm;
 import dilcheck.pintdb.model.V1ApiVersion;
-import dilcheck.pintdb.service.SaveDatabaseService;
+import dilcheck.pintdb.service.DatabaseService;
 import java.util.HashMap;
 import java.util.List;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class DatabaseController {
   protected final Logger logger = getLogger(getClass());
 
   @Autowired
-  SaveDatabaseService databaseService;
+  DatabaseService databaseService;
 
   /**
    * set string value to store.
@@ -35,7 +35,7 @@ public class DatabaseController {
   public ResultForm setString(@RequestBody RequestForm request) {
     String key = request.getKey();
     Object value = request.getValue();
-    logger.info("[DC] setString key: {}, value: {}", key, value);
+    logger.debug("[DC] setString key: {}, value: {}", key, value);
     databaseService.set(key, value, String.class);
 
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
@@ -49,7 +49,7 @@ public class DatabaseController {
    */
   @GetMapping("/strings/{key}")
   public ResultForm getString(@PathVariable String key) {
-    logger.info("[DC] getString key: {}", key);
+    logger.debug("[DC] getString key: {}", key);
 
     Object value = databaseService.get(key, String.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
@@ -63,7 +63,7 @@ public class DatabaseController {
    */
   @DeleteMapping("/strings/{key}")
   public ResultForm deleteString(@PathVariable String key) {
-    logger.info("[DC] deleteString key: {}", key);
+    logger.debug("[DC] deleteString key: {}", key);
 
     databaseService.delete(key);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
@@ -80,7 +80,7 @@ public class DatabaseController {
   public ResultForm setHashMap(@RequestBody RequestForm request) {
     String key = request.getKey();
     Object value = request.getValue();
-    logger.info("[DC] setHashMap key: {}, value: {}", key, value);
+    logger.debug("[DC] setHashMap key: {}, value: {}", key, value);
 
     databaseService.set(key, value, HashMap.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
@@ -94,7 +94,7 @@ public class DatabaseController {
    */
   @GetMapping("/hashmaps/{key}")
   public ResultForm getHashMap(@PathVariable String key) {
-    logger.info("[DC] getHashMap key: {}", key);
+    logger.debug("[DC] getHashMap key: {}", key);
 
     Object value = databaseService.get(key, HashMap.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
@@ -108,7 +108,7 @@ public class DatabaseController {
    */
   @DeleteMapping("/hashmaps/{key}")
   public ResultForm deleteHashMap(@PathVariable String key) {
-    logger.info("[DC] deleteHashMap key: {}", key);
+    logger.debug("[DC] deleteHashMap key: {}", key);
 
     databaseService.delete(key);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
@@ -124,7 +124,7 @@ public class DatabaseController {
   public ResultForm setList(@RequestBody RequestForm request) {
     String key = request.getKey();
     Object value = request.getValue();
-    logger.info("[DC] setList key: {}, value: {}", key, value);
+    logger.debug("[DC] setList key: {}, value: {}", key, value);
 
     databaseService.set(key, value, List.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
@@ -138,7 +138,7 @@ public class DatabaseController {
    */
   @GetMapping("/lists/{key}")
   public ResultForm getList(@PathVariable String key) {
-    logger.info("[DC] getList key: {}", key);
+    logger.debug("[DC] getList key: {}", key);
 
     Object value = databaseService.get(key, List.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
@@ -152,7 +152,7 @@ public class DatabaseController {
    */
   @DeleteMapping("/lists/{key}")
   public ResultForm deleteList(@PathVariable String key) {
-    logger.info("[DC] deleteList key: {}", key);
+    logger.debug("[DC] deleteList key: {}", key);
 
     databaseService.delete(key);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();

@@ -1,7 +1,7 @@
 package dilcheck.pintdb.domain.util;
 
-import static dilcheck.pintdb.domain.config.StoreConfig.getFileName;
-import static dilcheck.pintdb.domain.config.StoreConfig.getFilePath;
+import static dilcheck.pintdb.domain.config.Configuration.getFileName;
+import static dilcheck.pintdb.domain.config.Configuration.getFilePath;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import dilcheck.pintdb.domain.model.AppendableObjectOutputStream;
@@ -15,15 +15,6 @@ import org.slf4j.Logger;
 public class Utils {
   protected final Logger logger = getLogger(getClass());
   private static final String FILE_PATH = getFilePath() + "/" + getFileName();
-  private static AppendableObjectOutputStream outputStream;
-
-  static {
-    try {
-      outputStream = new AppendableObjectOutputStream(new FileOutputStream(FILE_PATH, true));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
 
   /**
    * save log to store.
@@ -57,7 +48,8 @@ public class Utils {
   }
 
   private static void save(HashMap<String, Object> log) {
-    try {
+    try (AppendableObjectOutputStream outputStream =
+        new AppendableObjectOutputStream(new FileOutputStream(FILE_PATH, true))) {
       outputStream.writeObject(log);
       outputStream.reset();
     } catch (FileNotFoundException e) {
