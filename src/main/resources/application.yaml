@@ -1,2 +1,8 @@
 server:
   port: 5959
+  health: 10000
+  
+kvStore:
+  expired-time: 30
+  file-path: /logfs/data
+  file-name: store.log

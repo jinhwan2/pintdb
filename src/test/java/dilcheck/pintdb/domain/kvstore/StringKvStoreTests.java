@@ -29,7 +29,7 @@ public class StringKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
   }
 
   @Test
@@ -43,7 +43,7 @@ public class StringKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
   }
 
   @Test
@@ -59,7 +59,7 @@ public class StringKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
   }
 
   @Test
@@ -75,6 +75,6 @@ public class StringKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
   }
 }

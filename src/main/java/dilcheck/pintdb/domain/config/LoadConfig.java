@@ -1,7 +1,7 @@
 package dilcheck.pintdb.domain.config;
 
-import static dilcheck.pintdb.domain.config.Configuration.DATA_FILE_NAME;
-import static dilcheck.pintdb.domain.config.Configuration.DATA_FILE_PATH;
+import static dilcheck.pintdb.domain.config.StoreConfig.getFileName;
+import static dilcheck.pintdb.domain.config.StoreConfig.getFilePath;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import dilcheck.pintdb.domain.model.AppendableObjectInputStream;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 public class LoadConfig {
   protected final Logger logger = getLogger(getClass());
 
-  private static final String FILE_PATH = DATA_FILE_PATH + "/" + DATA_FILE_NAME;
+  private static final String FILE_PATH = getFilePath() + "/" + getFileName();
 
   @Autowired
   UnSaveDatabaseService storeService;
@@ -59,6 +59,7 @@ public class LoadConfig {
       case "DELETE":
         storeService.delete(key);
         break;
+
       default:
         break;
     }

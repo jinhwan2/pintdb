@@ -3,29 +3,17 @@ package dilcheck.pintdb.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import dilcheck.pintdb.domain.config.LoadConfig;
-import dilcheck.pintdb.exec.PintDbLauncher;
 import dilcheck.pintdb.model.RequestForm;
-import dilcheck.pintdb.service.SaveDatabaseService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles("test")
 @SuppressWarnings("rawtypes")
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, classes = {PintDbLauncher.class,
-    DatabaseController.class, SaveDatabaseService.class, LoadConfig.class})
-public class DatabaseControllerRestTest {
+public class DatabaseControllerRestTests extends AbstractRunnerConfig {
   public static final String ENDPOINT = "http://localhost:2080/api/v1";
 
   @Test

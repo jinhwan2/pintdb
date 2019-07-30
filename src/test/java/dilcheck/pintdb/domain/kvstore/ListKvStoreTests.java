@@ -35,7 +35,7 @@ public class ListKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
   }
 
   @Test
@@ -49,7 +49,7 @@ public class ListKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
 
   }
 
@@ -67,7 +67,7 @@ public class ListKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
   }
 
   @Test
@@ -84,6 +84,6 @@ public class ListKvStoreTests extends TestConfig {
 
     long end = System.currentTimeMillis();
     // goal 1_000_000 write in 2 second
-    assertTrue(end - start < 2000);
+    assertTrue(end - start < 2_000);
   }
 }

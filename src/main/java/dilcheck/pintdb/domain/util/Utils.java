@@ -1,7 +1,7 @@
 package dilcheck.pintdb.domain.util;
 
-import static dilcheck.pintdb.domain.config.Configuration.DATA_FILE_NAME;
-import static dilcheck.pintdb.domain.config.Configuration.DATA_FILE_PATH;
+import static dilcheck.pintdb.domain.config.StoreConfig.getFileName;
+import static dilcheck.pintdb.domain.config.StoreConfig.getFilePath;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import dilcheck.pintdb.domain.model.AppendableObjectOutputStream;
@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 
 public class Utils {
   protected final Logger logger = getLogger(getClass());
-  private static final String FILE_PATH = DATA_FILE_PATH + "/" + DATA_FILE_NAME;
+  private static final String FILE_PATH = getFilePath() + "/" + getFileName();
   private static AppendableObjectOutputStream outputStream;
 
   static {
