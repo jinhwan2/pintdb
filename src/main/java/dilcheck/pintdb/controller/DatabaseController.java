@@ -2,16 +2,16 @@ package dilcheck.pintdb.controller;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import dilcheck.pintdb.model.DataType;
 import dilcheck.pintdb.model.ResultForm;
 import dilcheck.pintdb.model.V1ApiVersion;
-import dilcheck.pintdb.service.DatabaseService;
+import dilcheck.pintdb.service.SaveDatabaseService;
 import java.util.HashMap;
 import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +21,7 @@ public class DatabaseController {
   protected final Logger logger = getLogger(getClass());
 
   @Autowired
-  DatabaseService databaseService;
+  SaveDatabaseService databaseService;
 
   /**
    * set string value to store.
@@ -32,7 +32,7 @@ public class DatabaseController {
   @PostMapping("/strings")
   public ResultForm setString(String key, String value) {
     logger.info("[DC] setString key: {}, value: {}", key, value);
-    databaseService.set(key, value, DataType.STRING);
+    databaseService.set(key, value, String.class);
 
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
     return resultForm;
@@ -43,11 +43,11 @@ public class DatabaseController {
    * 
    * @param key key
    */
-  @GetMapping("/strings")
-  public ResultForm getString(String key) {
+  @GetMapping("/strings/{key}")
+  public ResultForm getString(@PathVariable String key) {
     logger.info("[DC] getString key: {}", key);
 
-    Object value = databaseService.get(key, DataType.STRING);
+    Object value = databaseService.get(key, String.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
     return resultForm;
   }
@@ -57,10 +57,11 @@ public class DatabaseController {
    * 
    * @param key key
    */
-  @DeleteMapping("/strings")
-  public ResultForm deleteString(String key) {
+  @DeleteMapping("/strings/{key}")
+  public ResultForm deleteString(@PathVariable String key) {
     logger.info("[DC] deleteString key: {}", key);
 
+    databaseService.delete(key);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
     return resultForm;
   }
@@ -74,7 +75,8 @@ public class DatabaseController {
   @PostMapping("/hashmaps")
   public ResultForm setHashMap(String key, HashMap<String, ? extends Object> value) {
     logger.info("[DC] setHashMap key: {}, value: {}", key, value);
-
+    
+    databaseService.set(key, value, HashMap.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
     return resultForm;
   }
@@ -84,11 +86,11 @@ public class DatabaseController {
    * 
    * @param key key
    */
-  @GetMapping("/hashmaps")
-  public ResultForm getHashMap(String key) {
+  @GetMapping("/hashmaps/{key}")
+  public ResultForm getHashMap(@PathVariable String key) {
     logger.info("[DC] getHashMap key: {}", key);
 
-    Object value = databaseService.get(key, DataType.HASHMAP);
+    Object value = databaseService.get(key, HashMap.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
     return resultForm;
   }
@@ -98,10 +100,11 @@ public class DatabaseController {
    * 
    * @param key key
    */
-  @DeleteMapping("/hashmaps")
-  public ResultForm deleteHashMap(String key) {
+  @DeleteMapping("/hashmaps/{key}")
+  public ResultForm deleteHashMap(@PathVariable String key) {
     logger.info("[DC] deleteHashMap key: {}", key);
 
+    databaseService.delete(key);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
     return resultForm;
   }
@@ -116,6 +119,7 @@ public class DatabaseController {
   public ResultForm setList(String key, List<? extends Object> value) {
     logger.info("[DC] setList key: {}, value: {}", key, value);
 
+    databaseService.set(key, value, List.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
     return resultForm;
   }
@@ -124,11 +128,11 @@ public class DatabaseController {
    * get list by key.
    * @param key key
    */
-  @GetMapping("/lists")
-  public ResultForm getList(String key) {
+  @GetMapping("/lists/{key}")
+  public ResultForm getList(@PathVariable String key) {
     logger.info("[DC] getList key: {}", key);
 
-    Object value = databaseService.get(key, DataType.LIST);
+    Object value = databaseService.get(key, List.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).data(value).build();
     return resultForm;
   }
@@ -137,10 +141,11 @@ public class DatabaseController {
    * delete list by key.
    * @param key key
    */
-  @DeleteMapping("/lists")
-  public ResultForm deleteList(String key) {
+  @DeleteMapping("/lists/{key}")
+  public ResultForm deleteList(@PathVariable String key) {
     logger.info("[DC] deleteList key: {}", key);
 
+    databaseService.delete(key);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
     return resultForm;
   }

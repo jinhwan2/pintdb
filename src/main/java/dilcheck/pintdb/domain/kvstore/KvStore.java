@@ -1,5 +1,6 @@
 package dilcheck.pintdb.domain.kvstore;
 
+import static dilcheck.pintdb.domain.config.Configuration.SESSION_TIMEOUT_SECOND;
 import static java.util.Objects.requireNonNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -12,7 +13,7 @@ public abstract class KvStore<T> {
   private static final String NULL_EXCEPTION_MESSAGE = "key must not be null";
 
   private static final TtlConcurrentHashMap<String, Object> ttlConcurrentHashMap =
-      new TtlConcurrentHashMap<>(TimeUnit.SECONDS, 30);
+      new TtlConcurrentHashMap<>(TimeUnit.SECONDS, SESSION_TIMEOUT_SECOND);
 
   @SuppressWarnings("unchecked")
   public void set(String key, Object value) {
