@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 import org.junit.Test;
 
-public class ListKvStoreTests extends StoreTestConfig {
+public class ListKvStoreTests extends TestConfig {
   private static final ListKvStore listKvStore = new ListKvStore();
   static final List<String> value = new ArrayList<>();
 

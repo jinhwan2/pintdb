@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.stream.IntStream;
 import org.junit.Test;
 
-public class StringKvStoreTests extends StoreTestConfig {
+public class StringKvStoreTests extends TestConfig {
   private static final StringKvStore stringKvStore = new StringKvStore();
   private static final String value = "value";
 

@@ -2,6 +2,7 @@ package dilcheck.pintdb.controller;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import dilcheck.pintdb.model.RequestForm;
 import dilcheck.pintdb.model.ResultForm;
 import dilcheck.pintdb.model.V1ApiVersion;
 import dilcheck.pintdb.service.SaveDatabaseService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @V1ApiVersion
@@ -26,11 +29,12 @@ public class DatabaseController {
   /**
    * set string value to store.
    * 
-   * @param key key
-   * @param value value(String)
+   * @param request requestForm(key, value)
    */
   @PostMapping("/strings")
-  public ResultForm setString(String key, String value) {
+  public ResultForm setString(@RequestBody RequestForm request) {
+    String key = request.getKey();
+    Object value = request.getValue();
     logger.info("[DC] setString key: {}, value: {}", key, value);
     databaseService.set(key, value, String.class);
 
@@ -69,13 +73,15 @@ public class DatabaseController {
   /**
    * set hashMap value to store.
    * 
-   * @param key key
-   * @param value value(hashMap)
+   * @param request requestForm(key, value)
    */
+  @ResponseBody
   @PostMapping("/hashmaps")
-  public ResultForm setHashMap(String key, HashMap<String, ? extends Object> value) {
+  public ResultForm setHashMap(@RequestBody RequestForm request) {
+    String key = request.getKey();
+    Object value = request.getValue();
     logger.info("[DC] setHashMap key: {}, value: {}", key, value);
-    
+
     databaseService.set(key, value, HashMap.class);
     ResultForm resultForm = new ResultForm.Builder().status(true).build();
     return resultForm;
@@ -112,11 +118,12 @@ public class DatabaseController {
   /**
    * set list value to store.
    * 
-   * @param key key
-   * @param value value(list)
+   * @param request requestForm(key, value)
    */
   @PostMapping("/lists")
-  public ResultForm setList(String key, List<? extends Object> value) {
+  public ResultForm setList(@RequestBody RequestForm request) {
+    String key = request.getKey();
+    Object value = request.getValue();
     logger.info("[DC] setList key: {}, value: {}", key, value);
 
     databaseService.set(key, value, List.class);
@@ -126,6 +133,7 @@ public class DatabaseController {
 
   /**
    * get list by key.
+   * 
    * @param key key
    */
   @GetMapping("/lists/{key}")
@@ -139,6 +147,7 @@ public class DatabaseController {
 
   /**
    * delete list by key.
+   * 
    * @param key key
    */
   @DeleteMapping("/lists/{key}")

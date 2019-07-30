@@ -7,7 +7,9 @@ import dilcheck.pintdb.domain.kvstore.KvStore;
 import dilcheck.pintdb.domain.kvstore.ListKvStore;
 import dilcheck.pintdb.domain.kvstore.StringKvStore;
 import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,9 @@ public class UnSaveDatabaseService {
   static {
     kvStoreMap.put(String.class, new StringKvStore());
     kvStoreMap.put(HashMap.class, new HashMapKvStore());
+    kvStoreMap.put(LinkedHashMap.class, new HashMapKvStore());
     kvStoreMap.put(List.class, new ListKvStore());
+    kvStoreMap.put(ArrayList.class, new ListKvStore());
   }
 
   /**

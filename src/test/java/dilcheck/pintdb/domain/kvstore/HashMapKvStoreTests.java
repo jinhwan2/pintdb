@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.stream.IntStream;
 import org.junit.Test;
 
-public class HashMapKvStoreTests extends StoreTestConfig {
+public class HashMapKvStoreTests extends TestConfig {
   private static final HashMapKvStore hashMapKvStore = new HashMapKvStore();
   static HashMap<String, String> value = new HashMap<>();
 
