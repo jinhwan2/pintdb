@@ -9,7 +9,7 @@ Link: [http://localhost:5959/swagger-ui.html](http://localhost:5959/swagger-ui.h
 - set
 - delete
 
-## Data Structure
+## Data Type
 - String
 - HashMap
 - List
